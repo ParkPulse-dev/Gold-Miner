@@ -7,7 +7,7 @@ public class HookSwing : MonoBehaviour
     public float maxSwingAngle = 180f;  // Adjust the maximum swing angle
     public float forwardSpeed = 5f;  // Adjust the forward movement speed
     public float maxForwardDistance = 10f;  // Adjust the maximum forward distance
-    private float currentSwingAngle = 230f;
+    private float currentSwingAngle = 230f; // Start point of this specific object's rotationg angle
     private bool isSwingingForward = false;  // Start with the hook swinging backward
     private bool isMovingForward = false;
     private Vector3 initialPosition;
@@ -38,22 +38,55 @@ public class HookSwing : MonoBehaviour
         else
         {
             // Update the swing angle based on the current direction
-            currentSwingAngle += (isSwingingForward ? 1 : -1) * swingSpeed * Time.deltaTime;
+            UpdateSwingAngle();
 
             // Check if the maximum swing angle is reached, and change direction if necessary
-            if ((Mathf.Abs(currentSwingAngle - 240f) >= maxSwingAngle) || (currentSwingAngle >= 230.01))
-            {
-                isSwingingForward = !isSwingingForward;
-            }
+            CheckAndChangeSwingDirection();
+
             // Apply rotation to the hook object
-            transform.rotation = Quaternion.Euler(0f, 0f, currentSwingAngle);
+            ApplyRotationToHookObject();
         }
+    }
+
+    // Update the swing angle based on the current direction
+    private void UpdateSwingAngle()
+    {
+        // Increment or decrement the swing angle based on the current direction
+        currentSwingAngle += (isSwingingForward ? 1 : -1) * swingSpeed * Time.deltaTime;
+    }
+
+    // Check if the maximum swing angle is reached, and change direction if necessary
+    private void CheckAndChangeSwingDirection()
+    {
+        // Define the thresholds for swing angle
+        float maxSwingAngleThreshold = 240f;
+        float minSwingAngleThreshold = 230.01f;
+
+        // Check if the maximum swing angle is reached or exceeded
+        if (Mathf.Abs(currentSwingAngle - maxSwingAngleThreshold) >= maxSwingAngle || currentSwingAngle >= minSwingAngleThreshold)
+        {
+            // Toggle the swing direction
+            isSwingingForward = !isSwingingForward;
+        }
+    }
+
+    // Apply rotation to the hook object
+    private void ApplyRotationToHookObject()
+    {
+        // Set the rotation of the hook object
+        transform.rotation = Quaternion.Euler(0f, 0f, currentSwingAngle);
     }
 
     void HandleForwardMovement()
     {
-        // Implement forward movement logic here
-        transform.Translate(Vector3.up * forwardSpeed * Time.deltaTime);
+        // Define the forward movement direction
+        Vector3 forwardDirection = Vector3.up;
+
+        // Calculate the forward movement vector
+        Vector3 forwardMovement = forwardDirection * forwardSpeed * Time.deltaTime;
+
+        // Implement forward movement
+        transform.Translate(forwardMovement);
 
         // Check if the forward movement distance exceeds the limit
         if ((Vector3.Distance(initialPosition, transform.position) >= maxForwardDistance))
