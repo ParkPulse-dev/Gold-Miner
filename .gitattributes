@@ -57,6 +57,7 @@
 *.prefab linguist-generated
 *.unity linguist-generated
 
-*.rb linguist-language=Java
+*.shader linguist-language=C#
+
 
 
