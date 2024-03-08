@@ -9,6 +9,14 @@ public class ScoreAdder : MonoBehaviour
     [SerializeField] string triggeringTag;
     [SerializeField] int pointsToAdd;
 
+    public int goldSackReward = 15;
+    public int goldReward = 10;
+    public int stoneReward = -5;
+    public int treasureBoxReward = 25;
+    public int emeraldReward = 50;
+
+
+
 
     private NumberField scoreField;  // Removed the serialized field
 
@@ -34,27 +42,27 @@ public class ScoreAdder : MonoBehaviour
             if (other.tag == "Stone")
             {
                 // Reduce score by 5 for colliding with a Stone
-                scoreField.AddNumber(-5);
+                scoreField.AddNumber(stoneReward);
             }
             else if (other.tag == "TreasureBox")
             {
                 // Increase score by 25 for colliding with a TreasureBox
-                scoreField.AddNumber(25);
+                scoreField.AddNumber(treasureBoxReward);
             }
             else if (other.tag == "Emerald")
             {
                 // Increase score by 50 for colliding with an Emerald
-                scoreField.AddNumber(50);
+                scoreField.AddNumber(emeraldReward);
             }
             else if (other.tag == "Gold")
             {
                 // Increase score by 10 for colliding with Gold
-                scoreField.AddNumber(10);
+                scoreField.AddNumber(goldReward);
             }
             else if (other.tag == "Gold Sack")
             {
                 // Increase score by 15 for colliding with a Gold Sack
-                scoreField.AddNumber(15);
+                scoreField.AddNumber(goldSackReward);
             }
         }
     }
